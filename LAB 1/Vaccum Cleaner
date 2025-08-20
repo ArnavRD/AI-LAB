@@ -1,0 +1,12 @@
+pos=[[0,0],[0,1],[1,1],[1,0]]
+clean=[[1,0],[0,1]]
+
+for i in pos:
+    row=i[0]
+    col=i[1]
+    if(clean[row][col]):
+        print(f"Room {i} had been already clean.....")
+    else:
+        print(f"Room {i} was dirty,it is now cleaned....")
+        clean[row][col]=1
+print("All rooms have been cleaned....")
