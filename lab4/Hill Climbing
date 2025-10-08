@@ -1,0 +1,59 @@
+import random
+
+def calculate_conflicts(state):
+    n = len(state)
+    conflicts = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if state[i] == state[j] or abs(state[i] - state[j]) == abs(i - j):
+                conflicts += 1
+    return conflicts
+
+def get_best_neighbor(state):
+    n = len(state)
+    best_state = state[:]
+    min_conflicts = calculate_conflicts(state)
+    for col in range(n):
+        original_row = state[col]
+        for row in range(n):
+            if row == original_row:
+                continue
+            new_state = state[:]
+            new_state[col] = row
+            conflicts = calculate_conflicts(new_state)
+            if conflicts < min_conflicts:
+                min_conflicts = conflicts
+                best_state = new_state[:]
+    return best_state, min_conflicts
+
+def hill_climbing(n, max_restarts=1000):
+    for attempt in range(max_restarts):
+        current_state = [random.randint(0, n-1) for _ in range(n)]
+        current_conflicts = calculate_conflicts(current_state)
+        while True:
+            neighbor, neighbor_conflicts = get_best_neighbor(current_state)
+            if neighbor_conflicts >= current_conflicts:
+                break
+            current_state = neighbor
+            current_conflicts = neighbor_conflicts
+        if current_conflicts == 0:
+            print(f"Solution found after {attempt + 1} restarts!")
+            return current_state
+    print("No solution found after maximum restarts.")
+    return None
+
+def print_board(state):
+    if state is None:
+        print("No solution.")
+        return
+    n = len(state)
+    for row in range(n):
+        line = ""
+        for col in range(n):
+            line += "Q " if state[col] == row else ". "
+        print(line)
+    print()
+
+n = 8
+solution = hill_climbing(n)
+print_board(solution)
