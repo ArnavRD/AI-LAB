@@ -1,0 +1,20 @@
+Code:
+facts = {
+    'American(Robert)': True,  
+    'Hostile(A)': True,        
+    'Sells_Weapons(Robert, A)': True  
+}
+
+If American(X) and Hostile(Y) and Sells_Weapons(X, Y), then Crime(X)
+def forward_reasoning(facts):
+   
+ If American(X) and Hostile(Y) and Sells_Weapons(X, Y), then Crime(X)
+    if facts.get('American(Robert)', False) and facts.get('Hostile(A)', False) and facts.get('Sells_Weapons(Robert, A)', False):
+        facts['Crime(Robert)'] = True  
+
+forward_reasoning(facts)
+
+if facts.get('Crime(Robert)', False):
+    print("Robert is a criminal.")
+else:
+    print("Robert is not a criminal.")
